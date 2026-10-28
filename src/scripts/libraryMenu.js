@@ -47,7 +47,7 @@ function renderHeader() {
 	html += '<button class="currentDateText emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;font-size: .8em"></button>';
     html += '<button class="emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;">';
 	html += '<span class="currentTimeText" style="font-size: 2em;padding: .1em;"></span>'; 
-	html += '<span class="currentTZText" style="font-size: 1em;padding: .1em;"></span>';
+	html += '<span class="currentNoteText" style="font-size: 1em;padding: .1em;"></span>';
 	html += '</button>';
 	html += '</div>';
     html += '<button is="paper-icon-button-light" class="headerSyncButton syncButton headerButton headerButtonRight hide"><span class="material-icons groups" aria-hidden="true"></span></button>';
@@ -79,7 +79,7 @@ function renderHeader() {
     clockFrameButton = skinHeader.querySelector('.clockFrameButton');
 	currentDateText = skinHeader.querySelector('.currentDateText');
 	currentTimeText = skinHeader.querySelector('.currentTimeText');
-	currentTZText = skinHeader.querySelector('.currentTZText');
+	currentNoteText = skinHeader.querySelector('.currentNoteText');
 	
     retranslateUi();
     lazyLoadViewMenuBarImages();
@@ -227,13 +227,13 @@ function updateClock() {
 		
         clockIntervalID = setInterval(function() {
 			const x = new Date();
-			currentTimeText.innerText = datetime.toLocaleTimeString(x, timeFmt.Current.fmt);
-			// Refresh the date every new hour (not day because of DST.)
+			let _timestr = datetime.toLocaleTimeString(x, timeFmt.Current.fmt).split(" ");
+			currentTimeText.innerText = _timestr[0]?_timestr[0]:"";
+			
+			// Refresh the date and TZ every new hour.
 			if (!x.getMinutes() && !x.getSeconds()) {
 				currentDateText.innerText = datetime.toLocaleDateString(x, dateFmt.Current.fmt);
-				const _timestr = datetime.toLocaleTimeString(x, timeFmt.Current.tz);
-				const _str = _timestr.split(" ");		
-				currentTZText.innerText = _str[1] || " ";
+				currentNoteText.innerText = (_timestr[1]?_timestr[1]:"") + (_timestr[2]?" "+_timestr[2]:"");
 			}
         }, 1000);
     } else {
@@ -247,9 +247,9 @@ function updateClock() {
 function timeRefresh() {
 	timeFmt.Current = getNextTimeFormat();
 	const x = new Date();
-	currentTimeText.innerText = datetime.toLocaleTimeString(x, timeFmt.Current.fmt);
-	const _str = datetime.toLocaleTimeString(x, timeFmt.Current.tz).split(" "); 
-	currentTZText.innerText = _str[1] || " ";
+	let _timestr = datetime.toLocaleTimeString(x, timeFmt.Current.fmt).split(" ");
+	currentTimeText.innerText = _timestr[0]?_timestr[0]:"";
+	currentNoteText.innerText = (_timestr[1]?_timestr[1]:"") + (_timestr[2]?" "+_timestr[2]:"");
 }
 
 function dateRefresh() {
@@ -275,12 +275,6 @@ function getNextTimeFormat() {
 		'second': '2-digit',
 		'timeZoneName': undefined
 	};
-	let _opts_tz = {
-		'hour': undefined,
-		'minute': undefined,
-		'second': undefined,
-		'timeZoneName': undefined
-	};
 	switch (timeFmt.Idx.Current) {
 		case 0:
 			break;
@@ -288,14 +282,14 @@ function getNextTimeFormat() {
 			delete _opts_time['second'];
 			break;
 		case 2:
-			_opts_tz['timeZoneName'] = 'short';
+			_opts_time['timeZoneName'] = 'short';
 			break;
 		case 3:
 			delete _opts_time['second'];
-			_opts_tz['timeZoneName'] = 'short';
+			_opts_time['timeZoneName'] = 'short';
 			break;
 	}
-	return {'fmt': _opts_time, 'tz': _opts_tz};
+	return {'fmt': _opts_time};
 }
 
 function getNextDateFormat() {
@@ -840,7 +834,7 @@ let headerSyncButton;
 let clockFrameButton;
 let currentDateText;
 let currentTimeText;
-let currentTZText;
+let currentNoteText;
 
 const enableLibraryNavDrawer = layoutManager.desktop;
 const enableLibraryNavDrawerHome = !layoutManager.tv;
