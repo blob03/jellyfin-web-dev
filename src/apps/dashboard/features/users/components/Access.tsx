@@ -4,6 +4,7 @@ import { DynamicDayOfWeek } from '@jellyfin/sdk/lib/generated-client/models/dyna
 import loading from 'components/loading/loading';
 import globalize from 'lib/globalize';
 import AccessScheduleList from 'components/dashboard/users/AccessScheduleList';
+import accessschedule from 'components/accessSchedule/accessSchedule';
 import Button from 'elements/emby-button/Button';
 import AccessContainer from 'components/dashboard/users/AccessContainer';
 import SectionTitleContainer from 'elements/SectionTitleContainer';
@@ -212,7 +213,7 @@ const Access = ({ userId }: AccessProps) => {
             __legacyApiClient__.getJSON(__legacyApiClient__.getUrl('Devices'))
         ])
             .then(([user, mediaFolders, channels, devices]) => {
-                loadUser(user, mediaFolders.Items, channels.Items, devices);
+                loadUser(user, mediaFolders.Items, channels.Items, devices.Items);
             })
             .catch(err => {
                 console.error('[userlibraryaccess] failed to load data', err);
