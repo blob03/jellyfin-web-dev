@@ -279,15 +279,15 @@ function getNextTimeFormat() {
 	};
 	switch (timeFmt.Idx.Current) {
 		case 0:
+			delete _opts_time['second'];
 			break;
 		case 1:
 			delete _opts_time['second'];
-			break;
-		case 2:
 			_opts_time['timeZoneName'] = 'short';
 			break;
+		case 2:
+			break;
 		case 3:
-			delete _opts_time['second'];
 			_opts_time['timeZoneName'] = 'short';
 			break;
 	}
