@@ -44,8 +44,8 @@ function renderHeader() {
     html += '</div>';
 	html += '<div class="headerRight">';
 	html += '<div class="clockFrameButton hide" style="display: flex;flex-direction: column;margin-right: 1.2em;padding: .4em;border: none;background: var(--jf-palette-AppBar-transparentBg);color: var(--jf-palette-text-secondary);">';
-	html += '<button class="currentDateText emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;font-size: .8em"></button>';
-    html += '<button class="emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;">';
+	html += '<button class="currentDateButton currentDateText emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;font-size: .8em"></button>';
+    html += '<button class="currentTimeButton emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;">';
 	html += '<span class="currentTimeText" style="font-size: 2em;padding: .1em;"></span>'; 
 	html += '<span class="currentNoteText" style="font-size: 1em;padding: .1em;"></span>';
 	html += '</button>';
@@ -79,6 +79,8 @@ function renderHeader() {
     clockFrameButton = skinHeader.querySelector('.clockFrameButton');
 	currentDateText = skinHeader.querySelector('.currentDateText');
 	currentTimeText = skinHeader.querySelector('.currentTimeText');
+	currentDateButton = skinHeader.querySelector('.currentDateButton');
+	currentTimeButton = skinHeader.querySelector('.currentTimeButton');
 	currentNoteText = skinHeader.querySelector('.currentNoteText');
 	
     retranslateUi();
@@ -217,8 +219,8 @@ function updateClock() {
     if (layoutManager.tv && enableClock()) {
         clockFrameButton.classList.remove('hide');
 		if (!hasClockClickHandler) {
-			currentTimeText.addEventListener('click', timeRefresh);
-			currentDateText.addEventListener('click', dateRefresh);
+			currentTimeButton.addEventListener('click', timeRefresh);
+			currentDateButton.addEventListener('click', dateRefresh);
 			hasClockClickHandler = true;
 		}
 		
@@ -238,8 +240,8 @@ function updateClock() {
         }, 1000);
     } else {
         clockFrameButton.classList.add('hide');
-		currentTimeText.removeEventListener('click', timeRefresh);
-		currentDateText.removeEventListener('click', dateRefresh);
+		currentTimeButton.removeEventListener('click', timeRefresh);
+		currentDateButton.removeEventListener('click', dateRefresh);
 		hasClockClickHandler = false;
     }
 }
@@ -833,7 +835,9 @@ let headerAudioPlayerButton;
 let headerSyncButton;
 let clockFrameButton;
 let currentDateText;
+let currentDateButton;
 let currentTimeText;
+let currentTimeButton;
 let currentNoteText;
 
 const enableLibraryNavDrawer = layoutManager.desktop;
