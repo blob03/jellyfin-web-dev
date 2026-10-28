@@ -232,7 +232,7 @@ function updateClock() {
 			let _timestr = datetime.toLocaleTimeString(x, timeFmt.Current.fmt).split(" ");
 			currentTimeText.innerText = _timestr[0]?_timestr[0]:"";
 			
-			// Refresh the date and TZ every new hour.
+			// Refresh the date, AM/PM and TZ only every new hour.
 			if (!x.getMinutes() && !x.getSeconds()) {
 				currentDateText.innerText = datetime.toLocaleDateString(x, dateFmt.Current.fmt);
 				currentNoteText.innerText = (_timestr[1]?_timestr[1]:"") + (_timestr[2]?" "+_timestr[2]:"");
@@ -246,6 +246,12 @@ function updateClock() {
     }
 }
 
+function dateRefresh() {
+	dateFmt.Current = getNextDateFormat();
+	const x = new Date();
+	currentDateText.innerText = datetime.toLocaleDateString(x, dateFmt.Current.fmt);
+}
+
 function timeRefresh() {
 	timeFmt.Current = getNextTimeFormat();
 	const x = new Date();
@@ -254,19 +260,10 @@ function timeRefresh() {
 	currentNoteText.innerText = (_timestr[1]?_timestr[1]:"") + (_timestr[2]?" "+_timestr[2]:"");
 }
 
-function dateRefresh() {
-	dateFmt.Current = getNextDateFormat();
-	const x = new Date();
-	currentDateText.innerText = datetime.toLocaleDateString(x, dateFmt.Current.fmt);
-}
-
 let clockIntervalID = undefined;
 let hasClockClickHandler = false;
 let timeFmt = {'Idx': {'Max': 4, 'Current': 0}, 'Current': {}};
 let dateFmt = {'Idx': {'Max': 6, 'Current': 0}, 'Current': {}};
-timeFmt.Current = getNextTimeFormat();
-dateFmt.Current = getNextDateFormat();
-
 
 function getNextTimeFormat() {
 	timeFmt.Idx.Current = (timeFmt.Idx.Current + 1) % timeFmt.Idx.Max;
@@ -282,6 +279,7 @@ function getNextTimeFormat() {
 			delete _opts_time['second'];
 			break;
 		case 1:
+			// This case contains the default time format.
 			delete _opts_time['second'];
 			_opts_time['timeZoneName'] = 'short';
 			break;
@@ -311,6 +309,7 @@ function getNextDateFormat() {
 			delete _opts_date['weekday'];
 			break;
 		case 1:
+			// That case contains the default date format.
 			_opts_date['day'] = '2-digit';
 			_opts_date['month'] = '2-digit';
 			_opts_date['year'] = '2-digit';
