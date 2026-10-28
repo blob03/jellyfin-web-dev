@@ -33,9 +33,6 @@ import 'material-design-icons-iconfont';
 import '../styles/scrollstyles.scss';
 import '../styles/flexstyles.scss';
 
-let clockIntervalID = undefined;
-let hasClockClickHandler = false;
-
 function renderHeader() {
     let html = '';
     html += '<div class="flex align-items-center flex-grow headerTop">';
@@ -46,9 +43,12 @@ function renderHeader() {
     html += '<h3 class="pageTitle" aria-hidden="true"></h3>';
     html += '</div>';
 	html += '<div class="headerRight">';
-	html += '<div class="clockFrameButton hide" style="display: flex;flex-direction: column;margin-right: 1.2em;border:none;background: var(--jf-palette-AppBar-transparentBg);color: var(--jf-palette-text-secondary);">';
+	html += '<div class="clockFrameButton hide" style="display: flex;flex-direction: column;margin-right: 1.2em;padding: .4em;border: none;background: var(--jf-palette-AppBar-transparentBg);color: var(--jf-palette-text-secondary);">';
 	html += '<button class="currentDateText emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;font-size: .8em"></button>';
-    html += '<button class="currentTimeText emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;font-size: 2em"></button>';
+    html += '<button class="emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;">';
+	html += '<span class="currentTimeText" style="font-size: 2em;padding: .1em;"></span>'; 
+	html += '<span class="currentTZText" style="font-size: 1em;padding: .1em;"></span>';
+	html += '</button>';
 	html += '</div>';
     html += '<button is="paper-icon-button-light" class="headerSyncButton syncButton headerButton headerButtonRight hide"><span class="material-icons groups" aria-hidden="true"></span></button>';
     html += '<span class="headerSelectedPlayer"></span>';
@@ -79,6 +79,7 @@ function renderHeader() {
     clockFrameButton = skinHeader.querySelector('.clockFrameButton');
 	currentDateText = skinHeader.querySelector('.currentDateText');
 	currentTimeText = skinHeader.querySelector('.currentTimeText');
+	currentTZText = skinHeader.querySelector('.currentTZText');
 	
     retranslateUi();
     lazyLoadViewMenuBarImages();
@@ -216,84 +217,89 @@ function updateClock() {
     if (layoutManager.tv && enableClock()) {
         clockFrameButton.classList.remove('hide');
 		if (!hasClockClickHandler) {
-			currentTimeText.addEventListener('click', timeClickHandler);
-			currentDateText.addEventListener('click', dateClickHandler);
+			currentTimeText.addEventListener('click', timeRefresh);
+			currentDateText.addEventListener('click', dateRefresh);
 			hasClockClickHandler = true;
 		}
+		
+		dateRefresh();
+		timeRefresh();
+		
         clockIntervalID = setInterval(function() {
 			const x = new Date();
-			const _time = datetime.toLocaleTimeString(x, curTimeFmt.timeFmt);
-			const _date = datetime.toLocaleDateString(x, curDateFmt.dateFmt); 
-			currentTimeText.innerText = _time;
-            currentDateText.innerText = _date;
+			currentTimeText.innerText = datetime.toLocaleTimeString(x, timeFmt.Current.fmt);
+			// Refresh the date every new hour (not day because of DST.)
+			if (!x.getMinutes() && !x.getSeconds()) {
+				currentDateText.innerText = datetime.toLocaleDateString(x, dateFmt.Current.fmt);
+				const _timestr = datetime.toLocaleTimeString(x, timeFmt.Current.tz);
+				const _str = _timestr.split(" ");		
+				currentTZText.innerText = _str[1] || " ";
+			}
         }, 1000);
     } else {
         clockFrameButton.classList.add('hide');
-		currentTimeText.removeEventListener('click', timeClickHandler);
-		currentDateText.removeEventListener('click', dateClickHandler);
+		currentTimeText.removeEventListener('click', timeRefresh);
+		currentDateText.removeEventListener('click', dateRefresh);
 		hasClockClickHandler = false;
     }
 }
 
-function timeClickHandler() {
-	curTimeFmt = getNextTimeFormat();
+function timeRefresh() {
+	timeFmt.Current = getNextTimeFormat();
 	const x = new Date();
-	const _time = datetime.toLocaleTimeString(x, curTimeFmt.timeFmt);
-	currentTimeText.innerText = _time;
+	currentTimeText.innerText = datetime.toLocaleTimeString(x, timeFmt.Current.fmt);
+	const _str = datetime.toLocaleTimeString(x, timeFmt.Current.tz).split(" "); 
+	currentTZText.innerText = _str[1] || " ";
 }
 
-function dateClickHandler() {
-	curDateFmt = getNextDateFormat();
+function dateRefresh() {
+	dateFmt.Current = getNextDateFormat();
 	const x = new Date();
-	const _date = datetime.toLocaleDateString(x, curDateFmt.dateFmt); 
-	currentDateText.innerText = _date;
+	currentDateText.innerText = datetime.toLocaleDateString(x, dateFmt.Current.fmt);
 }
 
-const timeFmtIdxMax = 4;
-const dateFmtIdxMax = 6;
-let curTimeFmtIdx = 0;
-let curDateFmtIdx = 0;
-let curTimeFmt = getNextTimeFormat();
-let curDateFmt = getNextDateFormat();
+let clockIntervalID = undefined;
+let hasClockClickHandler = false;
+let timeFmt = {'Idx': {'Max': 4, 'Current': 0}, 'Current': {}};
+let dateFmt = {'Idx': {'Max': 6, 'Current': 0}, 'Current': {}};
+timeFmt.Current = getNextTimeFormat();
+dateFmt.Current = getNextDateFormat();
+
 
 function getNextTimeFormat() {
-	curTimeFmtIdx = (curTimeFmtIdx + 1) % timeFmtIdxMax;
+	timeFmt.Idx.Current = (timeFmt.Idx.Current + 1) % timeFmt.Idx.Max;
 	
 	let _opts_time = {
 		'hour': '2-digit',
 		'minute': '2-digit',
-		'second': '2-digit'
+		'second': '2-digit',
+		'timeZoneName': undefined
 	};
-	
-	switch (curTimeFmtIdx) {
+	let _opts_tz = {
+		'hour': undefined,
+		'minute': undefined,
+		'second': undefined,
+		'timeZoneName': undefined
+	};
+	switch (timeFmt.Idx.Current) {
 		case 0:
-			_opts_time['hour'] = '2-digit';
-			_opts_time['minute'] = '2-digit';
-			_opts_time['second'] = '2-digit';
 			break;
 		case 1:
-			_opts_time['hour'] = '2-digit';
-			_opts_time['minute'] = '2-digit';
 			delete _opts_time['second'];
 			break;
 		case 2:
-			_opts_time['hour'] = '2-digit';
-			_opts_time['minute'] = '2-digit';
-			_opts_time['second'] = '2-digit';
-			_opts_time['timeZoneName'] = 'short';
+			_opts_tz['timeZoneName'] = 'short';
 			break;
 		case 3:
-			_opts_time['hour'] = '2-digit';
-			_opts_time['minute'] = '2-digit';
 			delete _opts_time['second'];
-			_opts_time['timeZoneName'] = 'short';
+			_opts_tz['timeZoneName'] = 'short';
 			break;
 	}
-	return {'timeFmt': _opts_time};
+	return {'fmt': _opts_time, 'tz': _opts_tz};
 }
 
 function getNextDateFormat() {
-	curDateFmtIdx = (curDateFmtIdx + 1) % dateFmtIdxMax;
+	dateFmt.Idx.Current = (dateFmt.Idx.Current + 1) % dateFmt.Idx.Max;
 	
 	let _opts_date = {
 		'day': '2-digit',
@@ -301,7 +307,7 @@ function getNextDateFormat() {
 		'year': '2-digit'
 	};
 	
-	switch (curDateFmtIdx) {
+	switch (dateFmt.Idx.Current) {
 		case 0:
 			_opts_date['day'] = '2-digit';
 			_opts_date['month'] = '2-digit';
@@ -339,7 +345,7 @@ function getNextDateFormat() {
 			_opts_date['weekday'] = 'long';
 			break;
 	}
-	return {'dateFmt': _opts_date};
+	return {'fmt': _opts_date};
 }
 
 function showSearch() {
@@ -834,6 +840,7 @@ let headerSyncButton;
 let clockFrameButton;
 let currentDateText;
 let currentTimeText;
+let currentTZText;
 
 const enableLibraryNavDrawer = layoutManager.desktop;
 const enableLibraryNavDrawerHome = !layoutManager.tv;
