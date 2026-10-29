@@ -160,7 +160,7 @@ const Access = ({ userId }: AccessProps) => {
         setAccessSchedules(user.Policy?.AccessSchedules || []);
 		
         loading.hide();
-    }, [loadChannels, loadDevices, loadMediaFolders]);
+    }, [libraryMenu, loadChannels, loadDevices, loadMediaFolders]);
 
 	const showSchedulePopup = (schedule: AccessSchedule, index: number) => {
 		schedule = schedule || {};
@@ -313,7 +313,7 @@ const Access = ({ userId }: AccessProps) => {
         });
 
         (page.querySelector('.userLibraryAccessForm') as HTMLFormElement).addEventListener('submit', onSubmit);
-    }, [__legacyApiClient__, loadData]);
+    }, [userId, __legacyApiClient__, loadData]);
 
     const removeScheduleCallback = useCallback((index: number) => {
         const newSchedules = accessSchedules.filter((_e, i) => i != index);
