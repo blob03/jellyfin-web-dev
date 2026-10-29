@@ -43,11 +43,11 @@ function renderHeader() {
     html += '<h3 class="pageTitle" aria-hidden="true"></h3>';
     html += '</div>';
 	html += '<div class="headerRight">';
-	html += '<div class="clockFrameButton hide" style="display: flex;flex-direction: column;margin-right: 1.2em;padding: .4em;border: none;background: var(--jf-palette-AppBar-transparentBg);color: var(--jf-palette-text-secondary);">';
+	html += '<div class="clockFrameButton hide" style="display: flex;flex-direction: column;margin-right: 1.2em;padding-right: .4em;padding-left: .4em;border: none;background: var(--jf-palette-AppBar-transparentBg);color: var(--jf-palette-text-secondary);">';
 	html += '<button class="currentDateButton currentDateText emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;font-size: .8em"></button>';
-    html += '<button class="currentTimeButton emby-tab-button emby-button show-focus" style="padding: 0;font-weight: normal;">';
-	html += '<span class="currentTimeText" style="font-size: 2em;padding: .1em;"></span>'; 
-	html += '<span class="currentNoteText" style="font-size: 1em;padding: .1em;"></span>';
+    html += '<button class="currentTimeButton emby-tab-button emby-button show-focus" style="line-height: 1;padding: 0;font-weight: normal;">';
+	html += '<span class="currentTimeText" style="font-size: 2em;padding-right: .1em;padding-left: 0;"></span>'; 
+	html += '<span class="currentNoteText" style="font-size: .8em;padding-right: 0;padding-left: .1em;"></span>';
 	html += '</button>';
 	html += '</div>';
     html += '<button is="paper-icon-button-light" class="headerSyncButton syncButton headerButton headerButtonRight hide"><span class="material-icons groups" aria-hidden="true"></span></button>';
@@ -221,6 +221,7 @@ function updateClock() {
 		if (!hasClockClickHandler) {
 			currentTimeButton.addEventListener('click', timeRefresh);
 			currentDateButton.addEventListener('click', dateRefresh);
+			clockFrameButton.addEventListener('dblclick', clockReset);
 			hasClockClickHandler = true;
 		}
 		
@@ -232,7 +233,7 @@ function updateClock() {
 			let _timestr = datetime.toLocaleTimeString(x, timeFmt.Current.fmt).split(" ");
 			currentTimeText.innerText = _timestr[0]?_timestr[0]:"";
 			
-			// Refresh the date, AM/PM and TZ only every new hour.
+			// Refresh the date, AM/PM and TZ only once every new hour.
 			if (!x.getMinutes() && !x.getSeconds()) {
 				currentDateText.innerText = datetime.toLocaleDateString(x, dateFmt.Current.fmt);
 				currentNoteText.innerText = (_timestr[1]?_timestr[1]:"") + (_timestr[2]?" "+_timestr[2]:"");
@@ -242,6 +243,7 @@ function updateClock() {
         clockFrameButton.classList.add('hide');
 		currentTimeButton.removeEventListener('click', timeRefresh);
 		currentDateButton.removeEventListener('click', dateRefresh);
+		clockFrameButton.removeEventListener('dblclick', clockReset);
 		hasClockClickHandler = false;
     }
 }
@@ -249,10 +251,15 @@ function updateClock() {
 function dateRefresh() {
 	dateFmt.Current = getNextDateFormat();
 	const x = new Date();
+	if (dateFmt.Hidden)
+		currentDateButton.classList.add('hide');
+	else
+		currentDateButton.classList.remove('hide');
 	currentDateText.innerText = datetime.toLocaleDateString(x, dateFmt.Current.fmt);
 }
 
-function timeRefresh() {
+function timeRefresh(ev) {
+
 	timeFmt.Current = getNextTimeFormat();
 	const x = new Date();
 	let _timestr = datetime.toLocaleTimeString(x, timeFmt.Current.fmt).split(" ");
@@ -260,15 +267,20 @@ function timeRefresh() {
 	currentNoteText.innerText = (_timestr[1]?_timestr[1]:"") + (_timestr[2]?" "+_timestr[2]:"");
 }
 
+function clockReset(ev) {	
+	dateFmt.Hidden = !dateFmt.Hidden;
+	dateRefresh();
+}
+
 let clockIntervalID = undefined;
 let hasClockClickHandler = false;
-let timeFmt = {'Idx': {'Max': 4, 'Current': 0}, 'Current': {}};
-let dateFmt = {'Idx': {'Max': 6, 'Current': 0}, 'Current': {}};
+let timeFmt = {'Idx': {'Max': 4, 'Current': 0}, 'Hidden': false, 'Current': {}};
+let dateFmt = {'Idx': {'Max': 6, 'Current': 0}, 'Hidden': false, 'Current': {}};
 
 function getNextTimeFormat() {
 	timeFmt.Idx.Current = (timeFmt.Idx.Current + 1) % timeFmt.Idx.Max;
 	
-	let _opts_time = {
+	let _fmt_time = {
 		'hour': '2-digit',
 		'minute': '2-digit',
 		'second': '2-digit',
@@ -276,26 +288,26 @@ function getNextTimeFormat() {
 	};
 	switch (timeFmt.Idx.Current) {
 		case 0:
-			delete _opts_time['second'];
+			delete _fmt_time['second'];
 			break;
 		case 1:
 			// This case contains the default time format.
-			delete _opts_time['second'];
-			_opts_time['timeZoneName'] = 'short';
+			delete _fmt_time['second'];
+			_fmt_time['timeZoneName'] = 'short';
 			break;
 		case 2:
 			break;
 		case 3:
-			_opts_time['timeZoneName'] = 'short';
+			_fmt_time['timeZoneName'] = 'short';
 			break;
 	}
-	return {'fmt': _opts_time};
+	return {'fmt': _fmt_time};
 }
 
 function getNextDateFormat() {
 	dateFmt.Idx.Current = (dateFmt.Idx.Current + 1) % dateFmt.Idx.Max;
 	
-	let _opts_date = {
+	let _fmt_date = {
 		'day': '2-digit',
 		'month': '2-digit',
 		'year': '2-digit'
@@ -303,44 +315,44 @@ function getNextDateFormat() {
 	
 	switch (dateFmt.Idx.Current) {
 		case 0:
-			_opts_date['day'] = '2-digit';
-			_opts_date['month'] = '2-digit';
-			_opts_date['year'] = 'numeric';
-			delete _opts_date['weekday'];
+			_fmt_date['day'] = '2-digit';
+			_fmt_date['month'] = '2-digit';
+			_fmt_date['year'] = 'numeric';
+			delete _fmt_date['weekday'];
 			break;
 		case 1:
 			// That case contains the default date format.
-			_opts_date['day'] = '2-digit';
-			_opts_date['month'] = '2-digit';
-			_opts_date['year'] = '2-digit';
-			delete _opts_date['weekday'];
+			_fmt_date['day'] = '2-digit';
+			_fmt_date['month'] = '2-digit';
+			_fmt_date['year'] = '2-digit';
+			delete _fmt_date['weekday'];
 			break;
 		case 2:
-			_opts_date['day'] = 'numeric';
-			_opts_date['month'] = 'long';
-			_opts_date['year'] = 'numeric';
-			_opts_date['weekday'] = 'long';
+			_fmt_date['day'] = 'numeric';
+			_fmt_date['month'] = 'long';
+			_fmt_date['year'] = 'numeric';
+			_fmt_date['weekday'] = 'long';
 			break;
 		case 3:
-			_opts_date['day'] = 'numeric';
-			_opts_date['month'] = 'short';
-			_opts_date['year'] = 'numeric';
-			_opts_date['weekday'] = 'short';
+			_fmt_date['day'] = 'numeric';
+			_fmt_date['month'] = 'short';
+			_fmt_date['year'] = 'numeric';
+			_fmt_date['weekday'] = 'short';
 			break;
 		case 4:
-			_opts_date['day'] = 'numeric';
-			_opts_date['month'] = 'long';
-			_opts_date['year'] = 'numeric';
-			_opts_date['weekday'] = 'short';
+			_fmt_date['day'] = 'numeric';
+			_fmt_date['month'] = 'long';
+			_fmt_date['year'] = 'numeric';
+			_fmt_date['weekday'] = 'short';
 			break;
 		case 5:
-			_opts_date['day'] = 'numeric';
-			_opts_date['month'] = 'short';
-			_opts_date['year'] = 'numeric';
-			_opts_date['weekday'] = 'long';
+			_fmt_date['day'] = 'numeric';
+			_fmt_date['month'] = 'short';
+			_fmt_date['year'] = 'numeric';
+			_fmt_date['weekday'] = 'long';
 			break;
 	}
-	return {'fmt': _opts_date};
+	return {'fmt': _fmt_date};
 }
 
 function showSearch() {
