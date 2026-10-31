@@ -29,7 +29,7 @@ Add a screen saver to automatically sign users out to keep their account safe.</
 Fix screensaver 'Logo' appearing behind the top toolbar and the footer frames.</br>
 Fix screensaver 'Logo' incorrectly centered.</br>
 
-### ImproveScreenManager
+### ImproveScreenSaverManager
 Fix mousewheel and middle/right click events not handled by the screensaver manager.</br>
 Fix keypress events not resetting the screensaver manager internal timer.</br>
 Fix event propagating to the UI when leaving a screensaver.</br>
@@ -44,6 +44,6 @@ Introduce a new Halloween based theme.</br>
 Place the QuickConnect page content at the center of its frame. This is consistent with how other pages are rendered.</br>
 
 ### Adjustable Clock
-Allow the clock to be disabled from the display settings for TV mode.</br>
-Provide several date and time formats that can be selected by clicking on the clock.</br>
+Allow the clock to be disabled from the display settings in TV mode.</br>
+Provide several date and time formats that users can select by clicking on the clock.</br>
 
