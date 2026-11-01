@@ -6,7 +6,7 @@ import Events from 'utils/events';
 
 import inputManager from './inputManager';
 import * as userSettings from './settings/userSettings';
-
+ 
 import './screensavermanager.scss';
 
 function getMinIdleTime() {
