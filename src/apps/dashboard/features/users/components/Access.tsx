@@ -215,7 +215,12 @@ const Access = ({ userId }: AccessProps) => {
             getDeviceApi(api).getDevices()
         ])
             .then(([user, mediaFolders, channels, devices]) => {
-                loadUser(user, mediaFolders.Items, channels.Items, devices.Items);
+				loadUser(
+                    user.data,
+                    mediaFolders.data.Items ?? [],
+                    channels.data.Items ?? [],
+                    devices.data.Items ?? []
+                );
             })
             .catch(err => {
                 console.error('[userlibraryaccess] failed to load data', err);
@@ -289,7 +294,11 @@ const Access = ({ userId }: AccessProps) => {
             user.Policy.BlockedMediaFolders = null;
 			user.Policy.AccessSchedules = getSchedulesFromPage();
 			
-            __legacyApiClient__!.updateUserPolicy(user.Id, user.Policy)
+            getUserApi(api)
+                .updateUserPolicy({
+                    userId: user.Id,
+                    userPolicy: user.Policy
+                })
                 .then(onSaveComplete)
                 .catch(err => {
                     console.error('[userlibraryaccess] failed to update user policy', err);
