@@ -56,7 +56,7 @@ function ScreenSaverManager() {
             throw new Error('An existing screensaver is already active.');
         }
 
-        console.debug('Showing screensaver ' + screensaver.name);
+        // console.debug('Showing screensaver ' + screensaver.name);
 
         document.body.classList.add('screensaver-noScroll');
 
@@ -70,7 +70,7 @@ function ScreenSaverManager() {
         }
         if (screensaver.hideOnMouse !== false) {
             window.addEventListener('mousemove', hide, true);
-			// Following is a handler for mousewheel events
+			// Mousewheel events should also trigger an exit.
 			window.addEventListener('wheel', hide, true);
         }
         if (screensaver.hideOnKey !== false) {
@@ -82,17 +82,16 @@ function ScreenSaverManager() {
 		if (!activeScreenSaver) {
             throw new Error('There is no active screensaver.');
         }
-		activeScreenSaver = null;
-		
+
 		// We first stop the event from being spread to the UI
-		// which could be a problem in some cases 
-		// i.e: user unexpectedly clicking a button under the screensaver overlay.
+		// which could lead to problems in some cases 
+		// e.g: users click unexpectedly hitting a button under the screensaver overlay.
 		event.stopPropagation();
-		// Since we block events propagation, 
-		// we must do a call to notify() in order to keep the manager internal counter uptodate.
+		// Now that events do not propagate
+		// we must make a call to notify() which keeps the manager internal counter uptodate.
 		inputManager.notify();
 		
-		console.debug('Hiding screensaver ' + activeScreenSaver.name);
+		// console.debug('Hiding screensaver ' + activeScreenSaver.name);
 		
 		if (activeScreenSaver.hideOnClick !== false) {
 			window.removeEventListener('click', hide, true);
@@ -109,6 +108,8 @@ function ScreenSaverManager() {
 		activeScreenSaver.hide().then(() => {
 			document.body.classList.remove('screensaver-noScroll');
 		});
+		
+		activeScreenSaver = null;
     }
 
     this.isShowing = () => {
