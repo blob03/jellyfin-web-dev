@@ -1231,6 +1231,8 @@ export default function (view) {
     let clickedElement;
 
     function onClickCapture(e) {
+        if (e.defaultPrevented) return;
+
         // Firefox/Edge emits `click` even if `preventDefault` was used on `keydown`
         // Ignore 'click' if another element was originally clicked
         if (!e.target.contains(clickedElement)) {
@@ -1241,6 +1243,7 @@ export default function (view) {
     }
 
     function onKeyDown(e) {
+        if (e.defaultPrevented) return;
         clickedElement = e.target;
 
         const isKeyModified = e.ctrlKey || e.altKey || e.metaKey;
@@ -1453,6 +1456,7 @@ export default function (view) {
     }
 
     function onWheel(e) {
+        if (e.defaultPrevented) return;
         if (getOpenedDialog()) return;
         if (e.deltaY < 0) {
             playbackManager.volumeUp(currentPlayer);
@@ -1540,8 +1544,10 @@ export default function (view) {
         const offsetX = -(tileOffsetX * trickplayInfo.Width);
         const offsetY = -(tileOffsetY * trickplayInfo.Height);
 
-        const imgSrc = apiClient.getUrl('Videos/' + item.Id + '/Trickplay/' + trickplayInfo.Width + '/' + index + '.jpg', {
-            ApiKey: apiClient.accessToken(),
+        const api = ServerConnections.getApi(item.ServerId);
+        // TODO: Support for this should be added to the SDK
+        const imgSrc = api.getUri(`Videos/${item.Id}/Trickplay/${trickplayInfo.Width}/${index}.jpg`, {
+            ApiKey: api.accessToken,
             MediaSourceId: mediaSourceId
         });
 
