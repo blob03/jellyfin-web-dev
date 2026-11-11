@@ -9,7 +9,7 @@ On ubuntu systems, you can use a command like #sudo apt install nodejs.<br/>
 Clone this repository<br/>
 #cd into its main directory<br/>
 #npm install<br/>
-#npm run build:development (Or production)<br/>
+#npm run build:production (or development)<br/>
 #mv /usr/share/jellyfin/web /usr/share/jellyfin/web.orig<br/>
 #cp -rf dist /usr/share/jellyfin/web<br/>
 <br/>
@@ -47,3 +47,7 @@ Place the QuickConnect page content at the center of its frame. This is consiste
 Allow the clock to be disabled from the display settings in TV mode.</br>
 Provide several date and time formats that users can select by clicking on the clock.</br>
 
+### FixAddMediaToPlaylistsAndCollections
+Allow Lg TVs and TV mode to access “Add to Collection” and “Add to Playlist” through the contextual menu available in the detail page.
+Allow Lg TVs and TV mode to access the management menu of playlists and collections list view, thus allowing the adding and removing of items individually.
+Allow TV mode to use the drag handle in list view.
