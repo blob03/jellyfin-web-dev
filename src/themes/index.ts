@@ -8,6 +8,7 @@ import catppuccinLatte from './catppuccin-latte';
 import catppuccinMacchiato from './catppuccin-macchiato';
 import catppuccinMocha from './catppuccin-mocha';
 import dark from './dark';
+import halloween from './halloween';
 import light from './light';
 import purplehaze from './purplehaze';
 import wmc from './wmc';
@@ -29,6 +30,7 @@ const DEFAULT_THEME = createTheme({
         'catppuccin-macchiato': catppuccinMacchiato,
         'catppuccin-mocha': catppuccinMocha,
         dark,
+		halloween,
         light,
         purplehaze,
         wmc
