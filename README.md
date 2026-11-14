@@ -51,3 +51,8 @@ Provide several date and time formats that users can select by clicking on the c
 Allow Lg TVs and TV mode to access “Add to Collection” and “Add to Playlist” through the contextual menu available in the detail page.
 Allow Lg TVs and TV mode to access the management menu of playlists and collections list view, thus allowing the adding and removing of items individually.
 Allow TV mode to use the drag handle in list view.
+
+### ShuffleAndPlayAllButtonsForSeriesLibs
+Add a Shuffle and a 'Play All' button to the series libraries browser in Shows and Episodes views.
+
+
