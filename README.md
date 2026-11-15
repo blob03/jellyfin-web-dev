@@ -1,58 +1,59 @@
-Merge all branches with the most uptodate Jellyfin-web client.<br/>
-Releases 'PatchBundle' are produced from this branch.
+This branch is the Merging of all branches with the most uptodate Jellyfin-web client available.<br/>
+Releases ('PatchBundle') are produced from this.
 
 ## Installation
 
-Note that as a prerequisite, you need nodejs and npm to be installed in your system.<br/>
-On ubuntu systems, you can use a command like #sudo apt install nodejs.<br/>
+As a prerequisite you need nodejs and npm to be installed in your system.<br/>
+This can be achieved on Ubuntu systems using a simple command line like #sudo apt install nodejs.
 
 Clone this repository<br/>
 #cd into its main directory<br/>
 #npm install<br/>
 #npm run build:production (or development)<br/>
-#mv /usr/share/jellyfin/web /usr/share/jellyfin/web.orig<br/>
-#cp -rf dist /usr/share/jellyfin/web<br/>
-<br/>
-To test, connect jellyfin with your browser as usual  (SRV IP address:8096 by default).</br>
-Flush your browser's cache if necessary.</br>
-</br>
+#sudo mv /usr/share/jellyfin/web /usr/share/jellyfin/web.orig<br/>
+#sudo cp -rf dist /usr/share/jellyfin/web
+
+To test, connect jellyfin with your browser as usual  (SRV IP address:8096 by default).<br/>
+Flush your browser's cache if necessary.
+
 
 ## Patch Bundle details
 
 ### RelocateAccessSchedule
-Relocate the "Access Schedule" settings into the access tab.</br>
+Relocate the "Access Schedule" settings into the access tab.
 
 ### AutoLogoutScreenSaver
-Add a screen saver to automatically sign users out to keep their account safe.</br>
+Add a screen saver to automatically sign users out to keep their account safe.
 
 ### FixLogoScreenSaver
-Fix screensaver 'Logo' appearing behind the top toolbar and the footer frames.</br>
-Fix screensaver 'Logo' incorrectly centered.</br>
+Fix screensaver 'Logo' appearing behind the top toolbar and the footer frames.<br/>
+Fix screensaver 'Logo' incorrectly centered.
 
 ### FixScreenSaverManager
-Fix mousewheel and middle/right click events not handled by the screensaver manager.</br>
-Fix keypress events not resetting the screensaver manager internal timer.</br>
-Fix event propagating to the UI when leaving a screensaver.</br>
+Fix mousewheel and middle/right click events not handled by the screensaver manager.<br/>
+Fix keypress events not resetting the screensaver manager internal timer.<br/>
+Fix event propagating to the UI when leaving a screensaver.
 
 ### ImproveDisplayModeTV
-Remove margins of section Libraries which caused the screen to scroll horizontally when navigating using arrow keys.</br>
+Remove margins of section Libraries which caused the screen to scroll horizontally when navigating using arrow keys.
 
 ### ThemeHalloween
-Introduce a new Halloween based theme.</br>
+Introduce a new Halloween style theme filled with terror.
 
 ### ImproveQuickConnect
-Place the QuickConnect page content at the center of its frame. This is consistent with how other pages are rendered.</br>
+Place the QuickConnect page content at the center of its frame. This is consistent with how other pages are rendered.
 
 ### Adjustable Clock
-Allow the clock to be disabled from the display settings in TV mode.</br>
-Provide several date and time formats that users can select by clicking on the clock.</br>
+Allow the clock to be disabled from the display settings in TV mode.<br/>
+The clock can now display the date of the day.<br/>
+Provide several date and time formats that users can select by repeatedly clicking on the clock.
 
 ### FixAddMediaToPlaylistsAndCollections
-Allow Lg TVs and TV mode to access “Add to Collection” and “Add to Playlist” through the contextual menu available in the detail page.
-Allow Lg TVs and TV mode to access the management menu of playlists and collections list view, thus allowing the adding and removing of items individually.
+Allow Lg TVs and TV mode to access “Add to Collection” and “Add to Playlist” through the contextual menu available in the detail page.<br/>
+Allow Lg TVs and TV mode to access the management menu of playlists and collections list view, thus allowing the removal of items individually.<br/>
 Allow TV mode to use the drag handle in list view.
 
 ### ShuffleAndPlayAllButtonsForSeriesLibs
-Add a Shuffle and a 'Play All' button to the series libraries browser in Shows and Episodes views.
+Add Shuffle and 'Play All' buttons to the series library browser in Shows and Episodes views.
 
 
