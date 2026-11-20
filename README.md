@@ -56,4 +56,10 @@ Allow TV mode to use the drag handle in list view.
 ### ShuffleAndPlayAllButtonsForSeriesLibs
 Add Shuffle and 'Play All' buttons to the series library browser in Shows and Episodes views.
 
+### FixSubmitDisplaySettingsOnTV
+Prevent corruption of the layout parameters in use and the subsequent break of the web Client after the submission<br/>
+of the display settings from a TV device.
+
+
+
 
