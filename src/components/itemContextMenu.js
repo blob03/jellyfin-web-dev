@@ -139,7 +139,9 @@ export async function getCommands(options) {
                 icon: 'library_add_check'
             });
         }
+    }
 
+    if (!browser.tv || browser.web0s) {
         if (itemHelper.supportsAddingToCollection(item) && (user.Policy.IsAdministrator || user.Policy.EnableCollectionManagement)) {
             commands.push({
                 name: globalize.translate('AddToCollection'),
