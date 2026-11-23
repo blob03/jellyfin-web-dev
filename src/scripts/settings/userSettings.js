@@ -443,7 +443,19 @@ export class UserSettings {
 
         return this.get('appTheme', false);
     }
+	
+	/**
+     * Get or set 'pinned Header' state.
+     * @param {boolean|undefined} val - mode ref to enable 'pinned Header' or undefined.
+     * @return {boolean} 'pinned Header' state.
+     */
+    enablePinnedHeader(val) {
+        if (val !== undefined)
+			return this.set('pinnedHeader', val.toString(), true);
 
+		return toBoolean(this.get('pinnedHeader', true), false);
+    }
+	
     /**
      * Get or set screensaver.
      * @param {string|undefined} [val] - Screensaver.
@@ -732,6 +744,7 @@ export const skipForwardLength = currentSettings.skipForwardLength.bind(currentS
 export const dashboardTheme = currentSettings.dashboardTheme.bind(currentSettings);
 export const skin = currentSettings.skin.bind(currentSettings);
 export const theme = currentSettings.theme.bind(currentSettings);
+export const enablePinnedHeader = currentSettings.enablePinnedHeader.bind(currentSettings);
 export const screensaver = currentSettings.screensaver.bind(currentSettings);
 export const backdropScreensaverInterval = currentSettings.backdropScreensaverInterval.bind(currentSettings);
 export const slideshowInterval = currentSettings.slideshowInterval.bind(currentSettings);
