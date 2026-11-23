@@ -21,6 +21,7 @@ import groupSelectionMenu from '../plugins/syncPlay/ui/groupSelectionMenu';
 import browser from './browser';
 import imageHelper from '../utils/image';
 import { getMenuLinks } from '../scripts/settings/webSettings';
+import { enablePinnedHeader } from '../scripts/settings/userSettings'
 import Dashboard, { pageClassOn } from '../utils/dashboard';
 import Events from '../utils/events.ts';
 import { getParameterByName } from '../utils/url.ts';
@@ -185,7 +186,7 @@ function updateUserInHeader(user) {
         }
     }
 
-	let isPinned = appSettings.pinHeader();
+	const isPinned = enablePinnedHeader();
     skinHeader.classList.toggle('pinned', isPinned);
 	
     requiresUserRefresh = false;
