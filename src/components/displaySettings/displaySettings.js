@@ -106,17 +106,17 @@ function loadForm(context, user, userSettings) {
         context.querySelector('.txtScreensaverTimeContainer').classList.add('hide');
     }
 
+    if (layoutManager.tv) {
+        context.querySelector('.chkPinnedHeaderContainer').classList.remove('hide');
+    } else {
+        context.querySelector('.chkPinnedHeaderContainer').classList.add('hide');
+    }
+
     if (datetime.supportsLocalization()) {
         context.querySelector('.fldDateTimeLocale').classList.remove('hide');
     } else {
         context.querySelector('.fldDateTimeLocale').classList.add('hide');
     }
-
-    if (layoutManager.tv) {
-		context.querySelector('.chkPinnedHeaderContainer').classList.remove('hide');
-	} else {
-		context.querySelector('.chkPinnedHeaderContainer').classList.add('hide');
-	}
 
 	fillThemes(context.querySelector('#selectTheme'), userSettings.theme());
     fillThemes(context.querySelector('#selectDashboardTheme'), userSettings.dashboardTheme());
