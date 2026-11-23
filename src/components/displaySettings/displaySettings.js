@@ -179,16 +179,18 @@ function saveUser(context, user, userSettingsInstance, apiClient) {
     userSettingsInstance.enableRewatchingInNextUp(context.querySelector('#chkRewatchingNextUp').checked);
     userSettingsInstance.useEpisodeImagesInNextUpAndResume(context.querySelector('#chkUseEpisodeImagesInNextUp').checked);
 
+    if (userSettingsInstance.enablePinnedHeader() != context.querySelector('#chkPinnedHeader').checked) {
+        const isPinned = context.querySelector('#chkPinnedHeader').checked;
+        const skinHeader = document.querySelector('.skinHeader');
+        userSettingsInstance.enablePinnedHeader(isPinned);
+        skinHeader.classList.toggle('pinned', isPinned);
+    }
+
     userSettingsInstance.enableFastFadein(context.querySelector('#chkFadein').checked);
     userSettingsInstance.enableBlurhash(context.querySelector('#chkBlurhash').checked);
     userSettingsInstance.enableBackdrops(context.querySelector('#chkBackdrops').checked);
     userSettingsInstance.detailsBanner(context.querySelector('#chkDetailsBanner').checked);
-	if (userSettingsInstance.enablePinnedHeader() != context.querySelector('#chkPinnedHeader').checked) {
-		const isPinned = context.querySelector('#chkPinnedHeader').checked;
-		const skinHeader = document.querySelector('.skinHeader');
-		userSettingsInstance.enablePinnedHeader(isPinned);
-		skinHeader.classList.toggle('pinned', isPinned);
-	}
+
     userSettingsInstance.disableCustomCss(context.querySelector('#chkDisableCustomCss').checked);
     userSettingsInstance.customCss(context.querySelector('#txtLocalCustomCss').value);
 
