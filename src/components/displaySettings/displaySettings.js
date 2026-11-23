@@ -17,7 +17,7 @@ import loading from '../loading/loading';
 import skinManager from '../../scripts/themeManager';
 import Events from '../../utils/events.ts';
 import toast from '../toast/toast';
-
+import LibraryMenu from '../../scripts/libraryMenu';
 import template from './displaySettings.template.html';
 
 import '../../elements/emby-select/emby-select';
@@ -86,11 +86,7 @@ function loadForm(context, user, userSettings) {
     } else {
         context.querySelector('.fldDisplayMode').classList.add('hide');
     }
-	if (layoutManager.tv) {
-		context.querySelector('.chkClockContainer').classList.remove('hide');
-	} else {
-		context.querySelector('.chkClockContainer').classList.add('hide');
-	}
+
     if (appHost.supports(AppFeature.ExternalLinks)) {
         context.querySelector('.learnHowToContributeContainer').classList.remove('hide');
     } else {
@@ -115,6 +111,12 @@ function loadForm(context, user, userSettings) {
     } else {
         context.querySelector('.fldDateTimeLocale').classList.add('hide');
     }
+	
+	if (layoutManager.tv) {
+		context.querySelector('.chkClockContainer').classList.remove('hide');
+	} else {
+		context.querySelector('.chkClockContainer').classList.add('hide');
+	}
 
 	fillThemes(context.querySelector('#selectTheme'), userSettings.theme());
     fillThemes(context.querySelector('#selectDashboardTheme'), userSettings.dashboardTheme());
@@ -180,7 +182,11 @@ function saveUser(context, user, userSettingsInstance, apiClient) {
     userSettingsInstance.enableFastFadein(context.querySelector('#chkFadein').checked);
     userSettingsInstance.enableBlurhash(context.querySelector('#chkBlurhash').checked);
     userSettingsInstance.enableBackdrops(context.querySelector('#chkBackdrops').checked);
-	userSettingsInstance.enableClock(context.querySelector('#chkClock').checked);
+	
+	const isClockEnabled = context.querySelector('#chkClock').checked;
+	userSettingsInstance.enableClock(isClockEnabled);
+	LibraryMenu.updateClock();
+	
     userSettingsInstance.detailsBanner(context.querySelector('#chkDetailsBanner').checked);
 
     userSettingsInstance.disableCustomCss(context.querySelector('#chkDisableCustomCss').checked);
