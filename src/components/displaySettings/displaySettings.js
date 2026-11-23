@@ -133,9 +133,9 @@ function loadForm(context, user, userSettings) {
     context.querySelector('#chkThemeVideo').checked = userSettings.enableThemeVideos();
     context.querySelector('#chkFadein').checked = userSettings.enableFastFadein();
     context.querySelector('#chkBlurhash').checked = userSettings.enableBlurhash();
+    context.querySelector('#chkPinnedHeader').checked = userSettings.enablePinnedHeader();
     context.querySelector('#chkBackdrops').checked = userSettings.enableBackdrops();
     context.querySelector('#chkDetailsBanner').checked = userSettings.detailsBanner();
-	context.querySelector('#chkPinnedHeader').checked = userSettings.enablePinnedHeader();
     context.querySelector('#chkDisableCustomCss').checked = userSettings.disableCustomCss();
     context.querySelector('#txtLocalCustomCss').value = userSettings.customCss();
 
