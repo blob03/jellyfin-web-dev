@@ -198,10 +198,7 @@ function updateUserInHeader(user) {
     }
 
 	updateClock();
-  
-	const isPinned = enablePinnedHeader();
-    skinHeader.classList.toggle('pinned', isPinned);
-	
+
     requiresUserRefresh = false;
 }
 
