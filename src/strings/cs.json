@@ -485,7 +485,7 @@
     "LabelSkipIfAudioTrackPresentHelp": "Zrušte zaškrtnutí pro zobrazení titulků u všech videí, bez ohledu na jazyk zvuku.",
     "LabelSkipIfGraphicalSubsPresent": "Přeskočit, jestliže video obsahuje vložené titulky",
     "LabelSkipIfGraphicalSubsPresentHelp": "Ponecháním textových titulků je možné dosáhnout efektivnějšího přenosu videa a snížení pravděpodobnosti, že bude video nutné překódovat.",
-    "LabelSortTitle": "Třídit dle názvu",
+    "LabelSortTitle": "Název pro třídění",
     "LabelSource": "Zdroj",
     "LabelSportsCategories": "Sportovní kategorie",
     "LabelStartWhenPossible": "Začít jakmile je to možné",
@@ -1945,5 +1945,7 @@
     "HlsAudioSeekStrategy": "Strategie pro vyhledávání v datových tocích HLS.",
     "LabelHlsAudioSeekStrategy": "Strategie vyhledávání v audiu.",
     "MessageForgotPasswordRedirect": "Byli jste přesměrováni na stránku externího poskytovatele za účelem resetování hesla.",
-    "MessageItemMetadataLocked": "Metadata této položky jsou uzamčena. Odemkněte je před použitím funkce Identifikovat."
+    "MessageItemMetadataLocked": "Metadata této položky jsou uzamčena. Odemkněte je před použitím funkce Identifikovat.",
+    "ManageMetadata": "Správa metadat",
+    "ManageServer": "Správa serveru"
 }
