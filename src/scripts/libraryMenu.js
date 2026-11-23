@@ -188,6 +188,8 @@ function updateUserInHeader(user) {
 	const isPinned = enablePinnedHeader();
     skinHeader.classList.toggle('pinned', isPinned);
 	
+	updateClock();
+  
     requiresUserRefresh = false;
 }
 

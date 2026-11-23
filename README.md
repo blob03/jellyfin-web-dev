@@ -60,6 +60,8 @@ Add Shuffle and 'Play All' buttons to the series library browser in Shows and Ep
 Prevent corruption of the layout parameters in use and the subsequent break of the web Client after the submission<br/>
 of the display settings from a TV device.
 
-
+### AddToggleablePinnedHeader
+Allow users to pin the header bar down on TV devices.<br/>
+For some brands this may greatly improve navigation.
 
 

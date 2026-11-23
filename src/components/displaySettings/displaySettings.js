@@ -118,6 +118,12 @@ function loadForm(context, user, userSettings) {
 		context.querySelector('.chkPinnedHeaderContainer').classList.add('hide');
 	}
 
+    if (layoutManager.tv) {
+		context.querySelector('.chkPinnedHeaderContainer').classList.remove('hide');
+	} else {
+		context.querySelector('.chkPinnedHeaderContainer').classList.add('hide');
+	}
+
 	fillThemes(context.querySelector('#selectTheme'), userSettings.theme());
     fillThemes(context.querySelector('#selectDashboardTheme'), userSettings.dashboardTheme());
 
