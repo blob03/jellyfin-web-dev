@@ -8,7 +8,6 @@ import globalize from 'lib/globalize';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import { EventType } from 'constants/eventType';
 import { queryClient } from 'utils/query/queryClient';
-
 import dom from '../utils/dom';
 import layoutManager from '../components/layoutManager';
 import inputManager from './inputManager';
@@ -21,6 +20,7 @@ import groupSelectionMenu from '../plugins/syncPlay/ui/groupSelectionMenu';
 import browser from './browser';
 import imageHelper from '../utils/image';
 import { getMenuLinks } from '../scripts/settings/webSettings';
+import { enablePinnedHeader } from '../scripts/settings/userSettings'
 import Dashboard, { pageClassOn } from '../utils/dashboard';
 import Events from '../utils/events.ts';
 import { getParameterByName } from '../utils/url.ts';
@@ -199,6 +199,9 @@ function updateUserInHeader(user) {
 
 	updateClock();
 
+	const isPinned = enablePinnedHeader();
+    skinHeader.classList.toggle('pinned', isPinned);
+	
     requiresUserRefresh = false;
 }
 
