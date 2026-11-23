@@ -1,74 +1,67 @@
-<h1 align="center">Jellyfin Web</h1>
-<h3 align="center">Part of the <a href="https://jellyfin.org">Jellyfin Project</a></h3>
+This branch is the Merging of all branches with the most uptodate Jellyfin-web client available.<br/>
+Releases ('PatchBundle') are produced from this.
 
----
+## Installation
 
-<p align="center">
-<img alt="Logo Banner" src="https://raw.githubusercontent.com/jellyfin/jellyfin-ux/master/branding/SVG/banner-logo-solid.svg?sanitize=true"/>
-<br/>
-<br/>
-<a href="https://github.com/jellyfin/jellyfin-web">
-<img alt="GPL 2.0 License" src="https://img.shields.io/github/license/jellyfin/jellyfin-web.svg"/>
-</a>
-<a href="https://github.com/jellyfin/jellyfin-web/releases">
-<img alt="Current Release" src="https://img.shields.io/github/release/jellyfin/jellyfin-web.svg"/>
-</a>
-<a href="https://translate.jellyfin.org/projects/jellyfin/jellyfin-web/?utm_source=widget">
-<img src="https://translate.jellyfin.org/widgets/jellyfin/-/jellyfin-web/svg-badge.svg" alt="Translation Status"/>
-</a>
-<br/>
-<a href="https://opencollective.com/jellyfin">
-<img alt="Donate" src="https://img.shields.io/opencollective/all/jellyfin.svg?label=backers"/>
-</a>
-<a href="https://features.jellyfin.org">
-<img alt="Feature Requests" src="https://img.shields.io/badge/fider-vote%20on%20features-success.svg"/>
-</a>
-<a href="https://matrix.to/#/+jellyfin:matrix.org">
-<img alt="Chat on Matrix" src="https://img.shields.io/matrix/jellyfin:matrix.org.svg?logo=matrix"/>
-</a>
-<a href="https://www.reddit.com/r/jellyfin">
-<img alt="Join our Subreddit" src="https://img.shields.io/badge/reddit-r%2Fjellyfin-%23FF5700.svg"/>
-</a>
-</p>
+As a prerequisite you need nodejs and npm to be installed in your system.<br/>
+This can be achieved on Ubuntu systems using a simple command line like #sudo apt install nodejs.
 
-Jellyfin Web is the frontend used for most of the clients available for end users, such as desktop browsers, Android, and iOS. We welcome all contributions and pull requests! If you have a larger feature in mind please open an issue so we can discuss the implementation before you start. Translations can be improved very easily from our <a href="https://translate.jellyfin.org/projects/jellyfin/jellyfin-web">Weblate</a> instance. Look through the following graphic to see if your native language could use some work!
+Clone this repository<br/>
+#cd into its main directory<br/>
+#npm install<br/>
+#npm run build:production (or development)<br/>
+#sudo mv /usr/share/jellyfin/web /usr/share/jellyfin/web.orig<br/>
+#sudo cp -rf dist /usr/share/jellyfin/web
 
-<a href="https://translate.jellyfin.org/engage/jellyfin/?utm_source=widget">
-<img src="https://translate.jellyfin.org/widgets/jellyfin/-/jellyfin-web/multi-auto.svg" alt="Detailed Translation Status"/>
-</a>
+To test, connect jellyfin with your browser as usual  (SRV IP address:8096 by default).<br/>
+Flush your browser's cache if necessary.
 
-## Build Process
 
-### Dependencies
+## Patch Bundle details
 
-- [Node.js](https://nodejs.org/en/download)
-- npm (included in Node.js)
+### RelocateAccessSchedule
+Relocate the "Access Schedule" settings into the access tab.
 
-### Getting Started
+### AutoLogoutScreenSaver
+Add a screen saver to automatically sign users out to keep their account safe.
 
-1. Clone or download this repository.
+### FixLogoScreenSaver
+Fix screensaver 'Logo' appearing behind the top toolbar and the footer frames.<br/>
+Fix screensaver 'Logo' incorrectly centered.
 
-   ```sh
-   git clone https://github.com/jellyfin/jellyfin-web.git
-   cd jellyfin-web
-   ```
+### FixScreenSaverManager
+Fix mousewheel and middle/right click events not handled by the screensaver manager.<br/>
+Fix keypress events not resetting the screensaver manager internal timer.<br/>
+Fix event propagating to the UI when leaving a screensaver.
 
-2. Install build dependencies in the project directory.
+### ImproveDisplayModeTV
+Remove margins of section Libraries which caused the screen to scroll horizontally when navigating using arrow keys.
 
-   ```sh
-   npm install
-   ```
+### ThemeHalloween
+Introduce a new Halloween style theme filled with terror.
 
-3. Run the web client with webpack for local development.
+### ImproveQuickConnect
+Place the QuickConnect page content at the center of its frame. This is consistent with how other pages are rendered.
 
-   ```sh
-   npm start
-   ```
+### Adjustable Clock
+Allow the clock to be disabled from the display settings in TV mode.<br/>
+The clock can now display the date of the day.<br/>
+Provide several date and time formats that users can select by repeatedly clicking on the clock.
 
-4. Build the client with sourcemaps available.
+### FixAddMediaToPlaylistsAndCollections
+Allow Lg TVs and TV mode to access “Add to Collection” and “Add to Playlist” through the contextual menu available in the detail page.<br/>
+Allow Lg TVs and TV mode to access the management menu of playlists and collections list view, thus allowing the removal of items individually.<br/>
+Allow TV mode to use the drag handle in list view.
 
-   ```sh
-   npm run build:development
-   ```
+### ShuffleAndPlayAllButtonsForSeriesLibs
+Add Shuffle and 'Play All' buttons to the series library browser in Shows and Episodes views.
 
-Review the [Contributing Guide](./CONTRIBUTING.md) for more information on our process and tech stack.
+### FixSubmitDisplaySettingsOnTV
+Prevent corruption of the layout parameters in use and the subsequent break of the web Client after the submission<br/>
+of the display settings from a TV device.
+
+### AddToggleablePinnedHeader
+Allow users to pin the header bar down on TV devices.<br/>
+For some brands this may greatly improve navigation.
+
+
