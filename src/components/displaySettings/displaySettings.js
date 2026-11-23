@@ -135,6 +135,7 @@ function loadForm(context, user, userSettings) {
     context.querySelector('#chkBlurhash').checked = userSettings.enableBlurhash();
     context.querySelector('#chkPinnedHeader').checked = userSettings.enablePinnedHeader();
     context.querySelector('#chkBackdrops').checked = userSettings.enableBackdrops();
+	context.querySelector('#chkClock').checked = userSettings.enableClock();
     context.querySelector('#chkDetailsBanner').checked = userSettings.detailsBanner();
     context.querySelector('#chkDisableCustomCss').checked = userSettings.disableCustomCss();
     context.querySelector('#txtLocalCustomCss').value = userSettings.customCss();
@@ -189,6 +190,7 @@ function saveUser(context, user, userSettingsInstance, apiClient) {
     userSettingsInstance.enableFastFadein(context.querySelector('#chkFadein').checked);
     userSettingsInstance.enableBlurhash(context.querySelector('#chkBlurhash').checked);
     userSettingsInstance.enableBackdrops(context.querySelector('#chkBackdrops').checked);
+	userSettingsInstance.enableClock(context.querySelector('#chkClock').checked);
     userSettingsInstance.detailsBanner(context.querySelector('#chkDetailsBanner').checked);
 
     userSettingsInstance.disableCustomCss(context.querySelector('#chkDisableCustomCss').checked);

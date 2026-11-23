@@ -1,6 +1,6 @@
+import { getDisplayPreferenceApi } from '@jellyfin/sdk/lib/utils/api/display-preference-api';
+
 import { getDisplayPreferencesQuery } from 'hooks/api/useDisplayPreferences';
-import { getUserQuery } from 'hooks/api/useUser';
-import { QUERY_KEY } from 'hooks/useUsers';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import { StillWatchingOptions } from 'plugins/stillWatching/constants';
 import Events from 'utils/events';
@@ -17,7 +17,14 @@ const CLIENT_ID = 'emby';
 function onSaveTimeout() {
     const self = this;
     self.saveTimeout = null;
-    self.currentApiClient.updateDisplayPreferences(DISPLAY_PREFERENCES_ID, self.displayPrefs, self.currentUserId, CLIENT_ID);
+    const api = ServerConnections.getApi(self.currentServerId);
+    getDisplayPreferenceApi(api)
+        .updateDisplayPreferences({
+            client: CLIENT_ID,
+            userId: self.currentUserId,
+            displayPreferencesId: DISPLAY_PREFERENCES_ID,
+            displayPreferencesDto: self.displayPrefs
+        });
 }
 
 function saveServerPreferences(instance) {
@@ -69,14 +76,13 @@ export class UserSettings {
             clearTimeout(this.saveTimeout);
         }
 
-        // Resolve the ApiClient and Server ID from the input
-        const apiClient = typeof apiClientOrId === 'string' ? ServerConnections.getApi(apiClientOrId) : apiClientOrId;
-        const serverId = typeof apiClientOrId === 'string' ? apiClientOrId : apiClient?.serverId();
+        // Resolve the Server ID from the input
+        const serverId = typeof apiClientOrId === 'string' ? apiClientOrId : apiClientOrId?.serverId();
 
         this.currentUserId = userId;
-        this.currentApiClient = apiClient;
+        this.currentServerId = serverId;
 
-        if (!userId || !apiClient) {
+        if (!userId || !serverId) {
             this.displayPrefs = null;
             return Promise.resolve();
         }
@@ -136,29 +142,6 @@ export class UserSettings {
         }
 
         return appSettings.get(name, userId);
-    }
-
-    /**
-     * Get or set user config.
-     * @param {Object|undefined} config - Configuration or undefined.
-     * @return {Object|Promise} Configuration or Promise.
-     */
-    serverConfig(config) {
-        const apiClient = this.currentApiClient;
-        if (config) {
-            return apiClient
-                .updateUserConfiguration(this.currentUserId, config)
-                .then(() => {
-                    queryClient.invalidateQueries({
-                        queryKey: [ QUERY_KEY, this.currentUserId ]
-                    });
-                });
-        }
-
-        const api = ServerConnections.getApi(apiClient.serverId());
-        return queryClient
-            .fetchQuery(getUserQuery(api, { userId: this.currentUserId }))
-            .then(user => user.Configuration);
     }
 
     /**
@@ -318,6 +301,19 @@ export class UserSettings {
         return toBoolean(this.get('enableBackdrops', false), false);
     }
 
+   /**
+     * Get or set 'Clock' state.
+     * @param {boolean|undefined} [val] - Flag to enable 'Clock' or undefined.
+     * @return {boolean} 'Clock' state.
+     */
+    enableClock(val) {
+        if (val !== undefined) {
+            return this.set('enableClock', val.toString(), false);
+        }
+
+        return toBoolean(this.get('enableClock', false), false);
+    }
+	
     /**
      * Get or set 'disableCustomCss' state.
      * @param {boolean|undefined} [val] - Flag to enable 'disableCustomCss' or undefined.
@@ -740,11 +736,11 @@ export const currentSettings = new UserSettings;
 export const setUserInfo = currentSettings.setUserInfo.bind(currentSettings);
 export const set = currentSettings.set.bind(currentSettings);
 export const get = currentSettings.get.bind(currentSettings);
-export const serverConfig = currentSettings.serverConfig.bind(currentSettings);
 export const allowedAudioChannels = currentSettings.allowedAudioChannels.bind(currentSettings);
 export const preferFmp4HlsContainer = currentSettings.preferFmp4HlsContainer.bind(currentSettings);
 export const limitSegmentLength = currentSettings.limitSegmentLength.bind(currentSettings);
 export const enableCinemaMode = currentSettings.enableCinemaMode.bind(currentSettings);
+export const enableClock = currentSettings.enableClock.bind(currentSettings);
 export const selectAudioNormalization = currentSettings.selectAudioNormalization.bind(currentSettings);
 export const enableNextVideoInfoOverlay = currentSettings.enableNextVideoInfoOverlay.bind(currentSettings);
 export const enableVideoRemainingTime = currentSettings.enableVideoRemainingTime.bind(currentSettings);
