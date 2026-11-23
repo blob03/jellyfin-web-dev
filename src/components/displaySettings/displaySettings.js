@@ -136,7 +136,6 @@ function loadForm(context, user, userSettings) {
     context.querySelector('#chkBackdrops').checked = userSettings.enableBackdrops();
 	context.querySelector('#chkClock').checked = userSettings.enableClock();
     context.querySelector('#chkDetailsBanner').checked = userSettings.detailsBanner();
-	context.querySelector('#chkPinnedHeader').checked = userSettings.enablePinnedHeader();
     context.querySelector('#chkDisableCustomCss').checked = userSettings.disableCustomCss();
     context.querySelector('#txtLocalCustomCss').value = userSettings.customCss();
 
