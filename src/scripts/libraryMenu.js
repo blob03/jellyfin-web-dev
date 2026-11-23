@@ -229,8 +229,8 @@ function updateClock() {
 			hasClockClickHandler = true;
 		}
 		
-		dateRefresh();
-		timeRefresh();
+		dateRefresh(false);
+		timeRefresh(false);
 		
         clockIntervalID = setInterval(function() {
 			const x = new Date();
@@ -245,15 +245,15 @@ function updateClock() {
         }, 1000);
     } else {
         clockFrameButton.classList.add('hide');
-		currentTimeButton.removeEventListener('click', timeRefresh);
-		currentDateButton.removeEventListener('click', dateRefresh);
+		currentTimeButton.removeEventListener('click', function() {timeRefresh(true);});
+		currentDateButton.removeEventListener('click', function() {dateRefresh(true);});
 		clockFrameButton.removeEventListener('dblclick', clockReset);
 		hasClockClickHandler = false;
     }
 }
 
-function dateRefresh() {
-	dateFmt.Current = getNextDateFormat();
+function dateRefresh(Next) {
+	dateFmt.Current = getDateFormat(Next);
 	const x = new Date();
 	if (dateFmt.Hidden)
 		currentDateButton.classList.add('hide');
@@ -262,9 +262,8 @@ function dateRefresh() {
 	currentDateText.innerText = datetime.toLocaleDateString(x, dateFmt.Current.fmt);
 }
 
-function timeRefresh(ev) {
-
-	timeFmt.Current = getNextTimeFormat();
+function timeRefresh(Next) {
+	timeFmt.Current = getTimeFormat(Next);
 	const x = new Date();
 	let _timestr = datetime.toLocaleTimeString(x, timeFmt.Current.fmt).split(" ");
 	currentTimeText.innerText = _timestr[0]?_timestr[0]:"";
@@ -273,7 +272,7 @@ function timeRefresh(ev) {
 
 function clockReset(ev) {	
 	dateFmt.Hidden = !dateFmt.Hidden;
-	dateRefresh();
+	dateRefresh(false);
 }
 
 let clockIntervalID = undefined;
@@ -281,8 +280,9 @@ let hasClockClickHandler = false;
 let timeFmt = {'Idx': {'Max': 4, 'Current': 0}, 'Hidden': false, 'Current': {}};
 let dateFmt = {'Idx': {'Max': 6, 'Current': 0}, 'Hidden': false, 'Current': {}};
 
-function getNextTimeFormat() {
-	timeFmt.Idx.Current = (timeFmt.Idx.Current + 1) % timeFmt.Idx.Max;
+function getTimeFormat(Next) {
+	if (Next)
+		timeFmt.Idx.Current = (timeFmt.Idx.Current + 1) % timeFmt.Idx.Max;
 	
 	let _fmt_time = {
 		'hour': '2-digit',
@@ -308,8 +308,9 @@ function getNextTimeFormat() {
 	return {'fmt': _fmt_time};
 }
 
-function getNextDateFormat() {
-	dateFmt.Idx.Current = (dateFmt.Idx.Current + 1) % dateFmt.Idx.Max;
+function getDateFormat(Next) {
+	if (Next)
+		dateFmt.Idx.Current = (dateFmt.Idx.Current + 1) % dateFmt.Idx.Max;
 	
 	let _fmt_date = {
 		'day': '2-digit',
