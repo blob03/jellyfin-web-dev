@@ -456,19 +456,7 @@ export class UserSettings {
 
         return this.get('appTheme', false);
     }
-	
-	/**
-     * Get or set 'pinned Header' state.
-     * @param {boolean|undefined} val - mode ref to enable 'pinned Header' or undefined.
-     * @return {boolean} 'pinned Header' state.
-     */
-    enablePinnedHeader(val) {
-        if (val !== undefined)
-			return this.set('pinnedHeader', val.toString(), true);
 
-		return toBoolean(this.get('pinnedHeader', true), false);
-    }
-	
     /**
      * Get or set screensaver.
      * @param {string|undefined} [val] - Screensaver.
