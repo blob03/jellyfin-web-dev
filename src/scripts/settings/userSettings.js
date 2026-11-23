@@ -746,7 +746,6 @@ export const skipForwardLength = currentSettings.skipForwardLength.bind(currentS
 export const dashboardTheme = currentSettings.dashboardTheme.bind(currentSettings);
 export const skin = currentSettings.skin.bind(currentSettings);
 export const theme = currentSettings.theme.bind(currentSettings);
-export const enablePinnedHeader = currentSettings.enablePinnedHeader.bind(currentSettings);
 export const screensaver = currentSettings.screensaver.bind(currentSettings);
 export const backdropScreensaverInterval = currentSettings.backdropScreensaverInterval.bind(currentSettings);
 export const slideshowInterval = currentSettings.slideshowInterval.bind(currentSettings);
