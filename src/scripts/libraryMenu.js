@@ -21,6 +21,7 @@ import groupSelectionMenu from '../plugins/syncPlay/ui/groupSelectionMenu';
 import browser from './browser';
 import imageHelper from '../utils/image';
 import { getMenuLinks } from '../scripts/settings/webSettings';
+import { enablePinnedHeader } from '../scripts/settings/userSettings'
 import Dashboard, { pageClassOn } from '../utils/dashboard';
 import Events from '../utils/events.ts';
 import { getParameterByName } from '../utils/url.ts';
@@ -199,6 +200,9 @@ function updateUserInHeader(user) {
 
 	updateClock();
   
+	const isPinned = enablePinnedHeader();
+    skinHeader.classList.toggle('pinned', isPinned);
+	
     requiresUserRefresh = false;
 }
 
@@ -481,7 +485,7 @@ function refreshLibraryInfoInDrawer(user) {
         html += globalize.translate('HeaderAdmin');
         html += '</h3>';
         html += `<a is="emby-linkbutton" class="navMenuOption lnkMediaFolder lnkManageServer" data-itemid="dashboard" href="#/dashboard"><span class="material-icons navMenuOptionIcon dashboard" aria-hidden="true"></span><span class="navMenuOptionText">${globalize.translate('TabDashboard')}</span></a>`;
-        html += `<a is="emby-linkbutton" class="navMenuOption lnkMediaFolder editorViewMenu" data-itemid="editor" href="#/metadata"><span class="material-icons navMenuOptionIcon mode_edit" aria-hidden="true"></span><span class="navMenuOptionText">${globalize.translate('MetadataManager')}</span></a>`;
+        html += `<a is="emby-linkbutton" class="navMenuOption lnkMediaFolder editorViewMenu" data-itemid="editor" href="#/metadata"><span class="material-icons navMenuOptionIcon mode_edit" aria-hidden="true"></span><span class="navMenuOptionText">${globalize.translate('ManageMetadata')}</span></a>`;
         html += '</div>';
     }
 
