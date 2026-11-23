@@ -741,6 +741,7 @@ export const currentSettings = new UserSettings;
 export const setUserInfo = currentSettings.setUserInfo.bind(currentSettings);
 export const set = currentSettings.set.bind(currentSettings);
 export const get = currentSettings.get.bind(currentSettings);
+export const serverConfig = currentSettings.serverConfig.bind(currentSettings);
 export const allowedAudioChannels = currentSettings.allowedAudioChannels.bind(currentSettings);
 export const preferFmp4HlsContainer = currentSettings.preferFmp4HlsContainer.bind(currentSettings);
 export const limitSegmentLength = currentSettings.limitSegmentLength.bind(currentSettings);
