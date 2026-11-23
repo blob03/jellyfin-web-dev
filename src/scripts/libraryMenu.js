@@ -8,6 +8,7 @@ import globalize from 'lib/globalize';
 import { ServerConnections } from 'lib/jellyfin-apiclient';
 import { EventType } from 'constants/eventType';
 import { queryClient } from 'utils/query/queryClient';
+ 
 import dom from '../utils/dom';
 import layoutManager from '../components/layoutManager';
 import inputManager from './inputManager';
@@ -1015,7 +1016,8 @@ const LibraryMenu = {
     setTabs,
     setDefaultTitle,
     setTitle,
-    setTransparentMenu
+    setTransparentMenu,
+	updateClock
 };
 
 window.LibraryMenu = LibraryMenu;
