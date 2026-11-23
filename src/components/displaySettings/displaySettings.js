@@ -86,7 +86,11 @@ function loadForm(context, user, userSettings) {
     } else {
         context.querySelector('.fldDisplayMode').classList.add('hide');
     }
-
+	if (layoutManager.tv) {
+		context.querySelector('.chkClockContainer').classList.remove('hide');
+	} else {
+		context.querySelector('.chkClockContainer').classList.add('hide');
+	}
     if (appHost.supports(AppFeature.ExternalLinks)) {
         context.querySelector('.learnHowToContributeContainer').classList.remove('hide');
     } else {
@@ -111,12 +115,6 @@ function loadForm(context, user, userSettings) {
     } else {
         context.querySelector('.fldDateTimeLocale').classList.add('hide');
     }
-	
-	if (layoutManager.tv) {
-		context.querySelector('.chkClockContainer').classList.remove('hide');
-	} else {
-		context.querySelector('.chkClockContainer').classList.add('hide');
-	}
 
 	fillThemes(context.querySelector('#selectTheme'), userSettings.theme());
     fillThemes(context.querySelector('#selectDashboardTheme'), userSettings.dashboardTheme());
