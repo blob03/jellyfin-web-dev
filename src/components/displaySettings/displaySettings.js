@@ -12,6 +12,7 @@ import { pluginManager } from '../pluginManager';
 import { appHost } from '../apphost';
 import focusManager from '../focusManager';
 import datetime from '../../scripts/datetime';
+import LibraryMenu from '../../scripts/libraryMenu';
 import globalize from '../../lib/globalize';
 import loading from '../loading/loading';
 import skinManager from '../../scripts/themeManager';
@@ -112,7 +113,13 @@ function loadForm(context, user, userSettings) {
         context.querySelector('.fldDateTimeLocale').classList.add('hide');
     }
 
-    fillThemes(context.querySelector('#selectTheme'), userSettings.theme());
+    if (layoutManager.tv) {
+		context.querySelector('.chkPinnedHeaderContainer').classList.remove('hide');
+	} else {
+		context.querySelector('.chkPinnedHeaderContainer').classList.add('hide');
+	}
+
+	fillThemes(context.querySelector('#selectTheme'), userSettings.theme());
     fillThemes(context.querySelector('#selectDashboardTheme'), userSettings.dashboardTheme());
 
     loadScreensavers(context, userSettings);
@@ -129,7 +136,7 @@ function loadForm(context, user, userSettings) {
     context.querySelector('#chkBlurhash').checked = userSettings.enableBlurhash();
     context.querySelector('#chkBackdrops').checked = userSettings.enableBackdrops();
     context.querySelector('#chkDetailsBanner').checked = userSettings.detailsBanner();
-
+	context.querySelector('#chkPinnedHeader').checked = userSettings.enablePinnedHeader();
     context.querySelector('#chkDisableCustomCss').checked = userSettings.disableCustomCss();
     context.querySelector('#txtLocalCustomCss').value = userSettings.customCss();
 
@@ -177,7 +184,12 @@ function saveUser(context, user, userSettingsInstance, apiClient) {
     userSettingsInstance.enableBlurhash(context.querySelector('#chkBlurhash').checked);
     userSettingsInstance.enableBackdrops(context.querySelector('#chkBackdrops').checked);
     userSettingsInstance.detailsBanner(context.querySelector('#chkDetailsBanner').checked);
-
+	if (userSettingsInstance.enablePinnedHeader() != context.querySelector('#chkPinnedHeader').checked) {
+		const isPinned = context.querySelector('#chkPinnedHeader').checked;
+		const skinHeader = document.querySelector('.skinHeader');
+		userSettingsInstance.enablePinnedHeader(isPinned);
+		skinHeader.classList.toggle('pinned', isPinned);
+	}
     userSettingsInstance.disableCustomCss(context.querySelector('#chkDisableCustomCss').checked);
     userSettingsInstance.customCss(context.querySelector('#txtLocalCustomCss').value);
 
