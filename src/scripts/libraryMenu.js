@@ -185,6 +185,9 @@ function updateUserInHeader(user) {
         }
     }
 
+	let isPinned = appSettings.pinHeader();
+    skinHeader.classList.toggle('pinned', isPinned);
+	
     requiresUserRefresh = false;
 }
 
@@ -838,7 +841,6 @@ Events.on(ServerConnections, 'localusersignedin', function (e, user) {
 
     ServerConnections.user(currentApiClient).then(function (userResult) {
         currentUser = userResult;
-        skinHeader.classList.add('pinned');
         updateUserInHeader(userResult);
     });
 });
