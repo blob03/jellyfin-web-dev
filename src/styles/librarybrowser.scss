@@ -231,6 +231,12 @@
     position: relative;
 }
 
+.layout-tv .pinned .skinHeader {
+    /* For some TVs, having a pinned header bar makes more sense.
+       So we leave it as an option in the display settings. */
+    position: fixed;
+}
+
 .hiddenViewMenuBar .skinHeader {
     display: none;
 }
