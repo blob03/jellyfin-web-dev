@@ -10,6 +10,7 @@ declare module '@mui/material/styles' {
         'catppuccin-macchiato': true;
         'catppuccin-mocha': true;
         purplehaze: true;
+        halloween: true;
         wmc: true;
     }
 
