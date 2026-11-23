@@ -757,7 +757,6 @@
     "LabelEnableIP6Help": "Enable IPv6 functionality.",
     "LabelEnableLUFSScan": "Enable LUFS scan",
     "LabelEnableLUFSScanHelp": "Clients can normalize audio playback to get equal loudness across tracks. This will make library scans longer and take more resources.",
-	"LabelEnablePinnedHeader": "This option helps make navigation more efficient on some TVs.",
     "LabelEnablePlugin": "Enable plugin",
     "LabelEnableRealtimeMonitor": "Enable real time monitoring",
     "LabelEnableRealtimeMonitorHelp": "Changes to files will be processed immediately on supported file systems.",
