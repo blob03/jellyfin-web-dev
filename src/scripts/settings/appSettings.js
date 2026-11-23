@@ -246,6 +246,19 @@ class AppSettings {
 
         return toBoolean(this.get('alwaysRemuxMp3'), false);
     }
+	
+	/**
+     * Get or set 'Pinned header' state.
+     * @param {boolean|undefined} val - Flag to enable 'Pinned header' or undefined.
+     * @return {boolean} 'Pinned header' state.
+     */
+	pinHeader(val) {
+		if (val !== undefined) {
+			return this.set('pinnedHeader', val.toString());
+        }
+		
+		return toBoolean(this.get('pinnedHeader'), false);
+	}
 
     /**
      * Get or set the preferred video aspect ratio.
